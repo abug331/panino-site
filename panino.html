@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panino – Sandwich-uri artizanale în Ploiești</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F8F3EA;
+    --cream-dark: #EDE5D4;
+    --brown: #3A2A22;
+    --brown-mid: #5C3D2E;
+    --olive: #6B8E4E;
+    --olive-dark: #4E6A38;
+    --orange: #D97706;
+    --orange-dark: #B45309;
+    --white: #FFFFFF;
+    --text-muted: #7A6152;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--cream);
+    color: var(--brown);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw;
+    height: 68px;
+    background: rgba(248,243,234,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(58,42,34,0.08);
+    transition: box-shadow .3s;
+  }
+  nav.scrolled { box-shadow: 0 4px 24px rgba(58,42,34,0.10); }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem; font-weight: 900;
+    color: var(--brown); letter-spacing: -0.5px;
+  }
+  .nav-logo span { color: var(--orange); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: .85rem; font-weight: 500; color: var(--brown-mid);
+    text-decoration: none; letter-spacing: .3px;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--orange); }
+  .nav-cta {
+    background: var(--orange); color: #fff;
+    padding: .48rem 1.2rem; border-radius: 50px;
+    font-size: .82rem; font-weight: 600; text-decoration: none;
+    transition: background .2s, transform .15s;
+  }
+  .nav-cta:hover { background: var(--orange-dark); transform: scale(1.03); }
+  .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--brown); margin: 5px 0; border-radius: 2px; transition: .3s; }
+
+  /* ── HERO ── */
+  #hero {
+    position: relative; min-height: 100vh;
+    display: flex; align-items: center;
+    background: linear-gradient(135deg, var(--brown) 0%, #5C3D2E 55%, #3A2A22 100%);
+    overflow: hidden; padding-top: 68px;
+  }
+  .hero-bg-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 50%, rgba(107,142,78,.18) 0%, transparent 55%),
+      radial-gradient(circle at 80% 20%, rgba(217,119,6,.12) 0%, transparent 45%);
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; gap: 4rem;
+    max-width: 1200px; margin: 0 auto;
+    padding: 6rem 5vw 5rem;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: rgba(107,142,78,.2); border: 1px solid rgba(107,142,78,.4);
+    color: #8FBF62; font-size: .75rem; font-weight: 600;
+    padding: .35rem .85rem; border-radius: 50px; letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 1.4rem;
+  }
+  .hero-badge::before { content: '●'; font-size: .5rem; }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 900; color: var(--white); line-height: 1.08;
+    margin-bottom: 1.2rem;
+  }
+  .hero-title em { color: var(--orange); font-style: italic; }
+  .hero-sub {
+    font-size: 1.05rem; color: rgba(255,255,255,.7);
+    line-height: 1.7; margin-bottom: 2.2rem; max-width: 460px;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--orange); color: #fff;
+    padding: .85rem 2rem; border-radius: 50px;
+    font-weight: 600; font-size: .95rem; text-decoration: none;
+    transition: background .2s, transform .15s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(217,119,6,.4);
+  }
+  .btn-primary:hover { background: var(--orange-dark); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(217,119,6,.45); }
+  .btn-outline {
+    border: 2px solid rgba(255,255,255,.35); color: #fff;
+    padding: .83rem 2rem; border-radius: 50px;
+    font-weight: 500; font-size: .95rem; text-decoration: none;
+    transition: border-color .2s, background .2s;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,.7); background: rgba(255,255,255,.08); }
+
+  .hero-stats {
+    display: flex; gap: 2rem; margin-top: 2.8rem;
+  }
+  .hero-stat { }
+  .hero-stat strong {
+    display: block; font-size: 1.7rem; font-weight: 700; color: #fff; line-height: 1;
+  }
+  .hero-stat span { font-size: .78rem; color: rgba(255,255,255,.55); letter-spacing: .3px; }
+
+  .hero-visual {
+    display: flex; justify-content: center; align-items: center;
+    position: relative;
+  }
+  .hero-plate {
+    width: clamp(300px, 38vw, 480px); aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #5C3D2E, #2A1C14);
+    box-shadow: 0 30px 80px rgba(0,0,0,.5), 0 0 0 2px rgba(217,119,6,.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: clamp(7rem, 15vw, 11rem);
+    position: relative; overflow: hidden;
+  }
+  .hero-plate::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.06), transparent 60%);
+    border-radius: 50%;
+  }
+  .floating-tag {
+    position: absolute; background: var(--cream); border-radius: 12px;
+    padding: .6rem 1rem; font-size: .78rem; font-weight: 600; color: var(--brown);
+    box-shadow: 0 8px 24px rgba(0,0,0,.2);
+    white-space: nowrap;
+  }
+  .float-1 { top: 10%; right: -2%; animation: floatY 3s ease-in-out infinite; }
+  .float-2 { bottom: 20%; left: -5%; animation: floatY 3.5s ease-in-out infinite .8s; }
+  .float-3 { top: 55%; right: -4%; animation: floatY 4s ease-in-out infinite .4s; }
+  @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+  /* ── SECTIONS COMMON ── */
+  .section { padding: 6rem 5vw; }
+  .section-alt { background: var(--cream-dark); }
+  .section-dark { background: var(--brown); color: var(--cream); }
+
+  .section-label {
+    font-size: .72rem; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--orange); margin-bottom: .7rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 1.2rem;
+  }
+  .section-sub {
+    font-size: 1rem; color: var(--text-muted); line-height: 1.75;
+    max-width: 520px;
+  }
+  .section-dark .section-sub { color: rgba(248,243,234,.6); }
+  .section-dark .section-title { color: var(--cream); }
+
+  /* ── DESPRE NOI ── */
+  #despre .inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center;
+  }
+  .despre-img {
+    border-radius: 20px; overflow: hidden;
+    aspect-ratio: 4/3;
+    background: linear-gradient(135deg, #5C3D2E 0%, #8B6355 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 6rem; box-shadow: 0 20px 60px rgba(58,42,34,.2);
+    position: relative;
+  }
+  .despre-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(58,42,34,.4), transparent 50%);
+  }
+  .values {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;
+  }
+  .value-chip {
+    display: flex; align-items: center; gap: .5rem;
+    background: rgba(107,142,78,.1); border: 1px solid rgba(107,142,78,.25);
+    border-radius: 8px; padding: .6rem .9rem;
+    font-size: .8rem; font-weight: 500; color: var(--olive-dark);
+  }
+
+  /* ── MENIU ── */
+  #meniu .inner { max-width: 1200px; margin: 0 auto; }
+  #meniu .section-header { text-align: center; margin-bottom: 3rem; }
+  #meniu .section-sub { margin: 0 auto; }
+  .products-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem;
+  }
+  .product-card {
+    background: var(--white); border-radius: 20px;
+    overflow: hidden; transition: transform .25s, box-shadow .25s;
+    box-shadow: 0 4px 20px rgba(58,42,34,.08);
+    cursor: pointer;
+  }
+  .product-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(58,42,34,.15); }
+  .product-img {
+    aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+    font-size: 4rem; position: relative;
+  }
+  .product-img.t1 { background: linear-gradient(135deg, #f0e6d0, #ddd0b0); }
+  .product-img.t2 { background: linear-gradient(135deg, #f5ddd0, #e8c8b8); }
+  .product-img.t3 { background: linear-gradient(135deg, #d8e8d0, #c0d8b8); }
+  .product-img.t4 { background: linear-gradient(135deg, #f0e0d0, #e0d0b0); }
+  .product-badge {
+    position: absolute; top: .8rem; left: .8rem;
+    background: var(--orange); color: #fff;
+    font-size: .65rem; font-weight: 700; letter-spacing: .5px;
+    padding: .25rem .6rem; border-radius: 50px; text-transform: uppercase;
+  }
+  .product-body { padding: 1.1rem 1.2rem 1.4rem; }
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 700; margin-bottom: .4rem;
+  }
+  .product-ingredients {
+    font-size: .75rem; color: var(--text-muted); line-height: 1.55;
+    margin-bottom: .9rem;
+  }
+  .product-footer { display: flex; align-items: center; justify-content: space-between; }
+  .product-price {
+    font-size: 1.2rem; font-weight: 700; color: var(--orange);
+  }
+  .product-price small { font-size: .75rem; font-weight: 400; color: var(--text-muted); }
+  .btn-order {
+    background: var(--brown); color: #fff;
+    border: none; border-radius: 50px;
+    padding: .48rem 1.1rem; font-size: .78rem; font-weight: 600;
+    cursor: pointer; transition: background .2s, transform .15s;
+    font-family: 'Poppins', sans-serif;
+  }
+  .btn-order:hover { background: var(--orange); transform: scale(1.05); }
+
+  /* ── DE CE PANINO ── */
+  #de-ce .inner { max-width: 1100px; margin: 0 auto; }
+  #de-ce .section-header { text-align: center; margin-bottom: 3.5rem; }
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+  }
+  .feature-card {
+    background: rgba(248,243,234,.06); border: 1px solid rgba(248,243,234,.12);
+    border-radius: 16px; padding: 1.8rem 1.5rem; text-align: center;
+    transition: background .25s, transform .25s;
+  }
+  .feature-card:hover { background: rgba(248,243,234,.1); transform: translateY(-4px); }
+  .feature-icon { font-size: 2rem; margin-bottom: .9rem; display: block; }
+  .feature-title { font-weight: 600; font-size: .95rem; margin-bottom: .4rem; color: var(--cream); }
+  .feature-desc { font-size: .82rem; color: rgba(248,243,234,.5); line-height: 1.6; }
+
+  /* ── GALERIE ── */
+  #galerie { background: var(--cream-dark); }
+  #galerie .inner { max-width: 1200px; margin: 0 auto; }
+  #galerie .section-header { margin-bottom: 2.5rem; }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto auto;
+    gap: 1rem;
+  }
+  .gal-item {
+    border-radius: 16px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3rem;
+    transition: transform .3s;
+    cursor: pointer;
+    min-height: 160px;
+  }
+  .gal-item:hover { transform: scale(1.02); }
+  .gal-item:nth-child(1) { grid-column: span 2; background: linear-gradient(135deg,#5C3D2E,#8B6355); min-height: 240px; font-size: 5rem; }
+  .gal-item:nth-child(2) { background: linear-gradient(135deg,#4E6A38,#6B8E4E); }
+  .gal-item:nth-child(3) { background: linear-gradient(135deg,#3A2A22,#5C3D2E); }
+  .gal-item:nth-child(4) { background: linear-gradient(135deg,#8B6355,#BFA08A); }
+  .gal-item:nth-child(5) { grid-column: span 2; background: linear-gradient(135deg,#6B8E4E,#4E6A38); min-height: 200px; font-size: 5rem; }
+
+  /* ── RECENZII ── */
+  #recenzii .inner { max-width: 1100px; margin: 0 auto; }
+  #recenzii .section-header { text-align: center; margin-bottom: 3rem; }
+  .reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .review-card {
+    background: var(--white); border-radius: 20px; padding: 1.8rem;
+    box-shadow: 0 4px 24px rgba(58,42,34,.07);
+    transition: transform .25s, box-shadow .25s;
+  }
+  .review-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(58,42,34,.12); }
+  .stars { color: #F59E0B; font-size: 1rem; letter-spacing: 1px; margin-bottom: 1rem; }
+  .review-text {
+    font-size: .9rem; line-height: 1.7; color: var(--brown-mid);
+    margin-bottom: 1.2rem; font-style: italic;
+  }
+  .reviewer {
+    display: flex; align-items: center; gap: .75rem;
+  }
+  .reviewer-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 700; color: #fff; flex-shrink: 0;
+  }
+  .av1 { background: var(--brown); }
+  .av2 { background: var(--olive); }
+  .av3 { background: var(--orange); }
+  .reviewer-name { font-weight: 600; font-size: .85rem; color: var(--brown); }
+  .reviewer-loc { font-size: .72rem; color: var(--text-muted); }
+
+  /* ── COMANDA CTA ── */
+  #comanda {
+    background: linear-gradient(135deg, var(--orange), var(--orange-dark));
+    padding: 5rem 5vw;
+    text-align: center;
+  }
+  #comanda h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 900;
+    color: #fff; margin-bottom: .8rem;
+  }
+  #comanda p { color: rgba(255,255,255,.8); font-size: 1.05rem; margin-bottom: 2rem; }
+  .btn-white {
+    background: #fff; color: var(--orange-dark);
+    padding: 1rem 2.5rem; border-radius: 50px;
+    font-weight: 700; font-size: 1rem; text-decoration: none;
+    display: inline-block; transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  }
+  .btn-white:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,.2); }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--brown); color: var(--cream); padding: 5rem 5vw; }
+  #contact .inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+  }
+  .contact-info .section-title { margin-bottom: 2rem; }
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.4rem;
+  }
+  .contact-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: rgba(248,243,234,.1); display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .contact-label { font-size: .72rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(248,243,234,.45); margin-bottom: .2rem; }
+  .contact-value { font-size: .95rem; font-weight: 500; }
+  .map-placeholder {
+    border-radius: 20px; overflow: hidden;
+    background: rgba(248,243,234,.06);
+    border: 1px solid rgba(248,243,234,.1);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 1rem; color: rgba(248,243,234,.4);
+    font-size: .9rem; min-height: 280px;
+  }
+  .map-placeholder span { font-size: 3rem; }
+  .map-placeholder a {
+    color: var(--orange); font-weight: 600; font-size: .85rem;
+    text-decoration: none; border: 1px solid var(--orange);
+    padding: .5rem 1.2rem; border-radius: 50px; transition: background .2s;
+  }
+  .map-placeholder a:hover { background: var(--orange); color: #fff; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #2A1C14; color: rgba(248,243,234,.5);
+    text-align: center; padding: 2rem 5vw;
+    font-size: .78rem;
+  }
+  footer strong { color: var(--cream); }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(28px); transition: opacity .65s ease, transform .65s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .nav-links.open {
+      display: flex; flex-direction: column; position: absolute;
+      top: 68px; left: 0; right: 0; background: var(--cream);
+      padding: 1.5rem 5vw; gap: 1rem; border-bottom: 1px solid var(--cream-dark);
+    }
+    .hamburger { display: block; }
+    .hero-inner { grid-template-columns: 1fr; text-align: center; padding: 4rem 5vw 3rem; }
+    .hero-sub { margin: 0 auto 2rem; }
+    .hero-btns { justify-content: center; }
+    .hero-stats { justify-content: center; }
+    .hero-visual { display: none; }
+    #despre .inner { grid-template-columns: 1fr; gap: 2.5rem; }
+    .products-grid { grid-template-columns: repeat(2, 1fr); }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    #contact .inner { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .gal-item:nth-child(1) { grid-column: span 2; }
+    .gal-item:nth-child(5) { grid-column: span 2; }
+  }
+  @media (max-width: 560px) {
+    .products-grid { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr; }
+    .values { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gal-item:nth-child(1), .gal-item:nth-child(5) { grid-column: span 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { transition: none; }
+    @keyframes floatY { 0%,100%{transform:none} }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Panino<span>.</span></a>
+  <button class="hamburger" id="hamburger" aria-label="Meniu">
+    <span></span><span></span><span></span>
+  </button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#despre">Despre noi</a></li>
+    <li><a href="#meniu">Meniu</a></li>
+    <li><a href="#galerie">Galerie</a></li>
+    <li><a href="#recenzii">Recenzii</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#comanda" class="nav-cta">Comandă acum</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <div class="hero-badge">Artizanal · Proaspăt · Ploiești</div>
+      <h1 class="hero-title">
+        Sandwich-uri<br>
+        <em>artizanale</em><br>
+        în inima orașului
+      </h1>
+      <p class="hero-sub">
+        Pâine proaspăt coaptă, ingrediente premium și combinații de gust care transformă fiecare pauză de masă într-o experiență memorabilă.
+      </p>
+      <div class="hero-btns">
+        <a href="#meniu" class="btn-primary">Vezi meniul</a>
+        <a href="#comanda" class="btn-outline">Comandă acum</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <strong>100%</strong>
+          <span>Pâine artizanală</span>
+        </div>
+        <div class="hero-stat">
+          <strong>4.9★</strong>
+          <span>Rating clienți</span>
+        </div>
+        <div class="hero-stat">
+          <strong>30 min</strong>
+          <span>Livrare rapidă</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-plate">🥪</div>
+      <div class="floating-tag float-1">🥖 Pâine coaptă azi</div>
+      <div class="floating-tag float-2">🚗 Drive-through disponibil</div>
+      <div class="floating-tag float-3">⭐ 4.9 / 5 recenzii</div>
+    </div>
+  </div>
+</section>
+
+<!-- DESPRE NOI -->
+<section id="despre" class="section">
+  <div class="inner">
+    <div class="despre-img reveal">🧑‍🍳</div>
+    <div class="reveal">
+      <p class="section-label">Povestea noastră</p>
+      <h2 class="section-title">Facem sandwich-uri cu suflet, nu cu grabă</h2>
+      <p class="section-sub">
+        La Panino credem că un sandwich extraordinar începe cu ingrediente de calitate. Folosim pâine proaspăt coaptă, carne atent selecționată și combinații de gust care transformă fiecare masă într-o experiență memorabilă.
+      </p>
+      <div class="values">
+        <div class="value-chip">🌾 Pâine coptă zilnic</div>
+        <div class="value-chip">🥩 Ingrediente premium</div>
+        <div class="value-chip">🤝 Furnizori locali</div>
+        <div class="value-chip">❤️ Pregătit cu pasiune</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENIU -->
+<section id="meniu" class="section section-alt">
+  <div class="inner">
+    <div class="section-header reveal">
+      <p class="section-label">Specialitățile noastre</p>
+      <h2 class="section-title">Cele mai iubite panino-uri</h2>
+      <p class="section-sub">Fiecare rețetă e construită în jurul unui ingredient-vedetă și perfectată prin zeci de degustări.</p>
+    </div>
+    <div class="products-grid">
+      <div class="product-card reveal">
+        <div class="product-img t1">
+          🥪
+          <div class="product-badge">Bestseller</div>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Turkey Curry Panino</div>
+          <div class="product-ingredients">Curcan afumat, sos curry, salată verde, castraveți, mozzarella</div>
+          <div class="product-footer">
+            <div class="product-price">28 RON</div>
+            <button class="btn-order">Comandă</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-img t2">🥪</div>
+        <div class="product-body">
+          <div class="product-name">Prosciutto Panino</div>
+          <div class="product-ingredients">Prosciutto crudo, rucola, parmezan, roșii cherry, pesto</div>
+          <div class="product-footer">
+            <div class="product-price">32 RON</div>
+            <button class="btn-order">Comandă</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-img t3">🥪</div>
+        <div class="product-body">
+          <div class="product-name">Italian Classic</div>
+          <div class="product-ingredients">Salam italian, mozzarella di bufala, roșii, busuioc proaspăt, ulei de măsline</div>
+          <div class="product-footer">
+            <div class="product-price">30 RON</div>
+            <button class="btn-order">Comandă</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card reveal">
+        <div class="product-img t4">
+          🥪
+          <div class="product-badge" style="background:var(--olive)">Nou</div>
+        </div>
+        <div class="product-body">
+          <div class="product-name">Chicken Special</div>
+          <div class="product-ingredients">Piept de pui la grătar, avocado, ceapă caramelizată, sos chipotle, cheddar</div>
+          <div class="product-footer">
+            <div class="product-price">29 RON</div>
+            <button class="btn-order">Comandă</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DE CE PANINO -->
+<section id="de-ce" class="section section-dark">
+  <div class="inner">
+    <div class="section-header reveal">
+      <p class="section-label" style="color: rgba(248,243,234,.55)">De ce să alegi Panino</p>
+      <h2 class="section-title">Mai mult decât un sandwich</h2>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <span class="feature-icon">🥖</span>
+        <div class="feature-title">Pâine coaptă zilnic</div>
+        <div class="feature-desc">Brutarii noștri coc pâinea în fiecare dimineață, pentru o textură perfectă.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">🥩</span>
+        <div class="feature-title">Ingrediente premium</div>
+        <div class="feature-desc">Selectăm cu grijă mezeluri și legume proaspete de la furnizori de încredere.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">☕</span>
+        <div class="feature-title">Cafea de calitate</div>
+        <div class="feature-desc">Espresso și specialități de cafea care completează perfect orice panino.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">🚗</span>
+        <div class="feature-title">Drive-Through</div>
+        <div class="feature-desc">Ridică comanda fără să cobori din mașină – rapid și comod.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">🛵</span>
+        <div class="feature-title">Livrare rapidă</div>
+        <div class="feature-desc">Livrăm în 30 de minute în Ploiești, proaspăt și cald.</div>
+      </div>
+      <div class="feature-card reveal">
+        <span class="feature-icon">❤️</span>
+        <div class="feature-title">Pregătit cu pasiune</div>
+        <div class="feature-desc">Fiecare panino este asamblat manual de echipa noastră dedicată.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section id="galerie" class="section">
+  <div class="inner">
+    <div class="section-header reveal">
+      <p class="section-label">Galerie</p>
+      <h2 class="section-title">Privește, apoi gustă</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gal-item reveal">🥪</div>
+      <div class="gal-item reveal">🌿</div>
+      <div class="gal-item reveal">🏠</div>
+      <div class="gal-item reveal">☕</div>
+      <div class="gal-item reveal">😊</div>
+    </div>
+  </div>
+</section>
+
+<!-- RECENZII -->
+<section id="recenzii" class="section section-alt">
+  <div class="inner">
+    <div class="section-header reveal">
+      <p class="section-label">Recenzii clienți</p>
+      <h2 class="section-title">Ce spun oaspeții noștri</h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">„Absolut delicios. Am simțit că fiecare ingredient a fost ales cu grijă. Cel mai bun sandwich din Ploiești, fără discuție."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av1">N</div>
+          <div>
+            <div class="reviewer-name">Nate Stevens</div>
+            <div class="reviewer-loc">Google Reviews</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">„Porțiile sunt generoase și ingredientele proaspete. Pâinea coaptă zilnic face toată diferența. Revin de două ori pe săptămână!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av2">R</div>
+          <div>
+            <div class="reviewer-name">Răzvan Rus</div>
+            <div class="reviewer-loc">Google Reviews</div>
+          </div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">„Sandwich-uri incredibile cu pâine proaspăt coaptă. Serviciu rapid și personal super prietenos. Recomand cu căldură!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar av3">S</div>
+          <div>
+            <div class="reviewer-name">Shunda Parks</div>
+            <div class="reviewer-loc">Google Reviews</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMANDA CTA -->
+<section id="comanda">
+  <h2>Ți s-a făcut poftă?</h2>
+  <p>Comandă acum și primești sandwichul tău artizanal în 30 de minute.</p>
+  <a href="tel:0720634655" class="btn-white">🛵 Comandă acum – 0720 634 655</a>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="inner">
+    <div class="contact-info reveal">
+      <p class="section-label" style="color:rgba(248,243,234,.5)">Găsește-ne</p>
+      <h2 class="section-title">Contact & Locație</h2>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Adresă</div>
+          <div class="contact-value">Strada Traian 1, Ploiești</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📞</div>
+        <div>
+          <div class="contact-label">Telefon</div>
+          <div class="contact-value"><a href="tel:0720634655" style="color:var(--orange);text-decoration:none">0720 634 655</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕒</div>
+        <div>
+          <div class="contact-label">Program</div>
+          <div class="contact-value">Luni – Duminică, 08:00 – 20:00</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🚗</div>
+        <div>
+          <div class="contact-label">Drive-Through</div>
+          <div class="contact-value">Disponibil zilnic</div>
+        </div>
+      </div>
+    </div>
+    <div class="map-placeholder reveal">
+      <span>🗺️</span>
+      <p>Strada Traian 1, Ploiești</p>
+      <a href="https://maps.google.com/?q=Strada+Traian+1,+Ploiesti" target="_blank" rel="noopener">Deschide în Google Maps</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2025 <strong>Panino</strong> · Sandwich-uri artizanale · Ploiești
+  · <a href="tel:0720634655" style="color:var(--orange);text-decoration:none">0720 634 655</a>
+</footer>
+
+<script>
+  // Sticky nav shadow
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 20);
+  });
+
+  // Hamburger
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('nav-links');
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('open');
+  });
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => navLinks.classList.remove('open'));
+  });
+
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Product card order button
+  document.querySelectorAll('.btn-order').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.textContent = '✓ Adăugat';
+      btn.style.background = 'var(--olive)';
+      setTimeout(() => { btn.textContent = 'Comandă'; btn.style.background = ''; }, 1800);
+    });
+  });
+</script>
+</body>
+</html>
